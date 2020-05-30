@@ -1,19 +1,33 @@
-import React from 'react';
-import { StyleSheet, Text, View } from 'react-native';
 
-export default function App() {
+import { createStackNavigator } from '@react-navigation/stack';
+import { Provider } from './src/context/Context'
+const Stack = createStackNavigator();
+import BlogList  from './src/screens/BlogList'
+import BlogDetails  from './src/screens/BlogDetails'
+import CreateBlog  from './src/screens/CreateBlog'
+const { Navigator, Screen } = Stack;
+import { NavigationContainer } from '@react-navigation/native';
+import React from 'react'
+
+const App = () => {
+
+  const menus = [
+    { name: "BlogList", component: BlogList, options: { title: 'Blogs' } },
+    { name: "BlogDetails", component: BlogDetails, options: { title: 'BlogDetails' } },
+    { name: "CreateBlog", component: CreateBlog, options: { title: 'CreateBlog' } },
+  ]
+
   return (
-    <View style={styles.container}>
-      <Text>Open up App.js to start working on your app!</Text>
-    </View>
-  );
+    <Provider>
+      <NavigationContainer>
+        <Navigator initialRouteName="BlogList" headerMode="screen" screenOptions={{ headerTintColor: 'white', headerStyle: { backgroundColor: 'tomato' }, }}>
+          {menus.map((temp, index) => (
+            <Screen name={temp.name} key={index} component={temp.component} options={temp.options} />
+          ))}
+        </Navigator>
+      </NavigationContainer>
+    </Provider>
+  )
 }
 
-const styles = StyleSheet.create({
-  container: {
-    flex: 1,
-    backgroundColor: '#fff',
-    alignItems: 'center',
-    justifyContent: 'center',
-  },
-});
+export default App;
